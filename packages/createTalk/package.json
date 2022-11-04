@@ -1,0 +1,9 @@
+{
+  "name": "@talkize/create-talk",
+  "version": "0.0.0",
+  "description": "Create a talk",
+  "scripts": {
+    "format": "prettier --write 'src/**/*.{ts,json}'",
+    "lint": "eslint  --ext .ts --fix src"
+  }
+}

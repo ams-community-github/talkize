@@ -1,0 +1,9 @@
+{
+  "name": "@talkize/get-talks",
+  "version": "0.0.0",
+  "description": "Get all talks",
+  "scripts": {
+    "format": "prettier --write 'src/**/*.{ts,json}'",
+    "lint": "eslint  --ext .ts --fix src"
+  }
+}

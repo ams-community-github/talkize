@@ -1,0 +1,9 @@
+---
+blank_issues_enabled: false
+contact_links:
+  - about: "Please ask and answer usage questions on Stack Overflow."
+    name: Question
+    url: "https://stackoverflow.com/questions/tagged/talkize"
+  - about: "Alternatively, you can use the Talkize Community Discord."
+    name: Chat
+    url: "https://discord.gg/talkize"

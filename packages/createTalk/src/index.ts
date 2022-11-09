@@ -8,6 +8,7 @@ import { flatten } from 'flat';
 import { isLeft } from 'fp-ts/lib/Either';
 import * as uuid from 'uuid';
 import { talkDecoder } from './decoder';
+import { Talk } from './types/talk';
 
 let client: DynamoDBDocumentClient;
 
@@ -35,10 +36,20 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
         region: process.env.AWS_DEFAULT_REGION,
         endpoint: process.env.AWS_DYNAMODB_ENDPOINT,
       }),
+      {
+        marshallOptions: {
+          convertEmptyValues: true,
+          removeUndefinedValues: true,
+        },
+      },
     );
   }
 
-  const talk = result.right;
+  const talk: Talk = {
+    ...result.right,
+    status: 'submitted',
+  };
+
   const talkId = uuid.v4();
 
   await client.send(

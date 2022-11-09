@@ -3,7 +3,9 @@
     "pipeline": {
         "build": {},
         "lint": {},
-        "format": {}
+        "format": {},
+        "test": {},
+        "test:ci": {}
     },
     "globalDependencies": [
         "tsconfig.json",

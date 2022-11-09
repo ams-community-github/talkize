@@ -4,6 +4,7 @@
   "description": "Create a talk",
   "scripts": {
     "format": "prettier --write 'src/**/*.{ts,json}'",
-    "lint": "eslint  --ext .ts --fix src"
+    "lint": "eslint  --ext .ts --fix src",
+    "test": "jest"
   }
 }

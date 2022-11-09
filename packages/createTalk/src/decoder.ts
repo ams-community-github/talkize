@@ -2,7 +2,7 @@ import * as Decoder from 'io-ts/Decoder';
 import { Speaker } from './types/speaker';
 import { Talk } from './types/talk';
 
-export const talkDecoder = Decoder.struct<Talk>({
+export const talkDecoder = Decoder.struct<Omit<Talk, 'status'>>({
   abstract: Decoder.string,
   category: Decoder.union(
     Decoder.literal('languages'),
@@ -23,10 +23,5 @@ export const talkDecoder = Decoder.struct<Talk>({
     firstName: Decoder.string,
     lastName: Decoder.string,
   }),
-  status: Decoder.union(
-    Decoder.literal('submitted'),
-    Decoder.literal('accepted'),
-    Decoder.literal('rejected'),
-  ),
   title: Decoder.string,
 });

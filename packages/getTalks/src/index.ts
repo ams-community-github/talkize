@@ -1,14 +1,11 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
-import {
-  APIGatewayProxyEventHeaders,
-  APIGatewayProxyHandlerV2,
-} from 'aws-lambda';
+import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { unflatten } from 'flat';
 
 let client: DynamoDBDocumentClient;
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+export const handler: APIGatewayProxyHandlerV2 = async () => {
   if (!client) {
     client = DynamoDBDocumentClient.from(
       new DynamoDBClient({

@@ -2,7 +2,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
 import {
   APIGatewayProxyEventHeaders,
-  APIGatewayProxyHandlerV2,
+  APIGatewayProxyHandler,
 } from 'aws-lambda';
 import { flatten } from 'flat';
 import { isLeft } from 'fp-ts/lib/Either';
@@ -12,7 +12,7 @@ import { Talk } from './types/talk';
 
 let client: DynamoDBDocumentClient;
 
-export const handler: APIGatewayProxyHandlerV2 = async (event) => {
+export const handler: APIGatewayProxyHandler = async (event) => {
   const contentType = getContentType(event.headers);
 
   if (!isValidContentType(contentType)) {

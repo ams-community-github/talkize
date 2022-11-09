@@ -5,7 +5,15 @@
         "lint": {},
         "format": {},
         "test": {},
-        "test:ci": {}
+        "generate:cfn": {
+            "outputs": [
+                "cdk.out/**"
+            ],
+            "outputMode": "new-only"
+        },
+        "deploy": {
+            "cache": false
+        }
     },
     "globalDependencies": [
         "tsconfig.json",

@@ -2,7 +2,7 @@ import faker from 'faker';
 import { handler } from './index';
 import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
-import { APIGatewayProxyResultV2, Context } from 'aws-lambda';
+import { APIGatewayProxyResult, Context } from 'aws-lambda';
 import { Factory } from 'rosie';
 import { Talk } from './types/talk';
 
@@ -57,7 +57,7 @@ describe('ChangeCancelledEndpoint', () => {
       } as any,
       {} as Context,
       () => {},
-    )) as APIGatewayProxyResultV2;
+    )) as APIGatewayProxyResult;
 
     const actualPutCommand = dynamoDBMock
       .commandCalls(PutCommand)
@@ -94,7 +94,7 @@ describe('ChangeCancelledEndpoint', () => {
       } as any,
       {} as Context,
       () => {},
-    )) as APIGatewayProxyResultV2;
+    )) as APIGatewayProxyResult;
 
     expect(actual).toEqual(expected);
   });
@@ -124,7 +124,7 @@ describe('ChangeCancelledEndpoint', () => {
       } as any,
       {} as Context,
       () => {},
-    )) as APIGatewayProxyResultV2;
+    )) as APIGatewayProxyResult;
 
     expect(actual).toEqual(expected);
   });
@@ -154,7 +154,7 @@ describe('ChangeCancelledEndpoint', () => {
       } as any,
       {} as Context,
       () => {},
-    )) as APIGatewayProxyResultV2;
+    )) as APIGatewayProxyResult;
 
     expect(actual).toEqual(expected);
   });
@@ -188,7 +188,7 @@ describe('ChangeCancelledEndpoint', () => {
       } as any,
       {} as Context,
       () => {},
-    )) as APIGatewayProxyResultV2;
+    )) as APIGatewayProxyResult;
 
     expect(actual).toEqual(expected);
   });
@@ -222,7 +222,7 @@ describe('ChangeCancelledEndpoint', () => {
       } as any,
       {} as Context,
       () => {},
-    )) as APIGatewayProxyResultV2;
+    )) as APIGatewayProxyResult;
 
     expect(actual).toEqual(expected);
   });
@@ -256,7 +256,7 @@ describe('ChangeCancelledEndpoint', () => {
       } as any,
       {} as Context,
       () => {},
-    )) as APIGatewayProxyResultV2;
+    )) as APIGatewayProxyResult;
 
     expect(actual).toEqual(expected);
   });

@@ -1,0 +1,19 @@
+{
+  "name": "@talkize/aws-deployment",
+  "version": "0.0.0",
+  "description": "AWS Infra as Code",
+  "private": true,
+  "scripts": {
+    "prebuild": "rimraf dist && rimraf cdk.out",
+    "generate:cfn": "cdk synth",
+    "deploy": "cdk deploy --all --require-approval never --outputs-file ./dist/cdk-outputs.json",
+    "bootstrap": "cdk bootstrap",
+    "format": "prettier --write 'src/**/*.{ts,json}'",
+    "lint": "eslint --ext .ts --fix src"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.50.0",
+    "aws-cdk-lib": "^2.50.0",
+    "ts-node": "^10.7.0"
+  }
+}

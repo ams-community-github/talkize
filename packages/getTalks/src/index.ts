@@ -1,11 +1,11 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
-import { APIGatewayProxyHandlerV2 } from 'aws-lambda';
+import { APIGatewayProxyHandler } from 'aws-lambda';
 import { unflatten } from 'flat';
 
 let client: DynamoDBDocumentClient;
 
-export const handler: APIGatewayProxyHandlerV2 = async () => {
+export const handler: APIGatewayProxyHandler = async () => {
   if (!client) {
     client = DynamoDBDocumentClient.from(
       new DynamoDBClient({
@@ -26,8 +26,13 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
     }),
   );
 
+  const talks = Items?.map((i) => {
+    const { partitionKey, sortKey, ...flattenData } = i;
+    return unflatten(flattenData);
+  });
+
   return {
     statusCode: 200,
-    body: JSON.stringify(unflatten(Items || [])),
+    body: JSON.stringify(talks),
   };
 };

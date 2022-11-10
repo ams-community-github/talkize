@@ -1,5 +1,5 @@
 templates:
-  - aws/cdk/cdk.out/*.template.json
+  - cnf/*.template.json
 append_rules:
   - cfn_lint_serverless.rules
 ignore_checks:

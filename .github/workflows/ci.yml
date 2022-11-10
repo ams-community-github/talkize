@@ -98,6 +98,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: cnf
+          path: cnf
       - name: Lint Cloudformation
         run: cfn-lint
 
@@ -115,5 +116,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: cnf
+          path: cnf
       - name: Nag Cloudformation
-        run: cfn_nag_scan -i aws/cdk/cdk.out/ -t ..*\*template.json
+        run: cfn_nag_scan -i cnf/ -t ..*\*template.json

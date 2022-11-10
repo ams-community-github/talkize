@@ -66,7 +66,7 @@ jobs:
       - name: Build
         run: npm run build
 
-  generate:cnf:
+  generate-cnf:
     runs-on: ubuntu-latest
 
     steps:
@@ -84,8 +84,8 @@ jobs:
           name: cnf
           path: aws/cdk/cdk.out/*.template.json
 
-  cnf:lint:
-    needs: [generate:cnf]
+  cnf-lint:
+    needs: generate-cnf
     runs-on: ubuntu-latest
 
     steps:
@@ -100,3 +100,20 @@ jobs:
           name: cnf
       - name: Lint Cloudformation
         run: cfn-lint
+
+  cnf-nag:
+    needs: generate-cnf
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+        ruby-version: "3.0"
+      - run: gem install cfn-nag
+      - name: Download Cloudformation
+        uses: actions/download-artifact@v3
+        with:
+          name: cnf
+      - name: Nag Cloudformation
+        run: cfn_nag_scan -i aws/cdk/cdk.out/ -t ..*\*template.json

@@ -1,0 +1,10 @@
+{
+    "name": "eslint-config-talkize",
+    "main": "index.js",
+    "dependencies": {
+        "eslint": "^8.26.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-config-turbo": "^0.0.4"
+    }
+}

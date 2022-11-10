@@ -1,4 +1,6 @@
-const config = {
+import type { JestConfigWithTsJest } from 'ts-jest';
+
+const jestConfig: JestConfigWithTsJest = {
   preset: 'ts-jest',
   verbose: true,
   rootDir: 'src',
@@ -10,6 +12,7 @@ const config = {
   coverageReporters: ['html', 'text', 'text-summary', 'cobertura'],
   collectCoverage: true,
   reporters: ['default', 'jest-junit'],
+  resolver: '<rootDir>/../jest.resolver.js',
 };
 
-module.exports = config;
+export default jestConfig;

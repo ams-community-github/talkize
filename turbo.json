@@ -1,10 +1,42 @@
 {
     "$schema": "https://turborepo.org/schema.json",
     "pipeline": {
-        "build": {},
+        "build": {
+            "inputs": [
+                "src/**/*.ts"
+            ],
+            "dependsOn": [
+                "^build"
+            ],
+            "env": [
+                "AWS_DEFAULT_REGION",
+                "AWS_DYNAMODB_ENDPOINT",
+                "TALK_TABLE_NAME"
+            ],
+            "outputMode": "new-only"
+        },
+        "test": {
+            "inputs": [
+                "src/**/*.ts",
+                "jest.config.js"
+            ],
+            "dependsOn": [
+                "^build"
+            ],
+            "outputMode": "new-only"
+        },
+        "test:ci": {
+            "inputs": [
+                "src/**/*.ts",
+                "jest.config.js"
+            ],
+            "dependsOn": [
+                "^build"
+            ],
+            "outputMode": "new-only"
+        },
         "lint": {},
         "format": {},
-        "test": {},
         "generate:cfn": {
             "outputs": [
                 "cdk.out/**"
@@ -16,7 +48,6 @@
         }
     },
     "globalDependencies": [
-        "tsconfig.json",
         "package.json"
     ]
 }

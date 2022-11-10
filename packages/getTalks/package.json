@@ -4,6 +4,11 @@
   "description": "Get all talks",
   "scripts": {
     "format": "prettier --write 'src/**/*.{ts,json}'",
-    "lint": "eslint  --ext .ts --fix src"
+    "build": "tsc --noEmit",
+    "lint": "eslint --ext .ts --fix src"
+  },
+  "devDependencies": {
+    "eslint-config-talkize": "*",
+    "tsconfig": "*"
   }
 }

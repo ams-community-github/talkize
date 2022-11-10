@@ -1,6 +1,5 @@
 {
   "packages/**/*.{ts,json}": [
-    "prettier --write",
-    "eslint --fix"
+    "eslint --fix -c packages/eslint-config-talkize/index.js"
   ]
 }

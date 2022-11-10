@@ -24,19 +24,19 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}}
 
-  # test:
-  #   runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #         cache: "npm"
-  #     - run: npm ci
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
 
-  #     - name: Tests
-  #       run: npm test
+      - name: Tests
+        run: npm test
 
   lint:
     runs-on: ubuntu-latest
@@ -52,16 +52,51 @@ jobs:
       - name: Linter
         run: npm run lint
 
-  # build:
-  #   runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #         cache: "npm"
-  #     - run: npm ci
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
 
-  #     - name: Build
-  #       run: npm run build
+      - name: Build
+        run: npm run build
+
+  generate:cnf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
+      - name: Generate Cloudformation
+        run: npm run generate:cfn
+      - name: Archive cloud formation
+        uses: actions/upload-artifact@v3
+        with:
+          name: cnf
+          path: aws/cdk/cdk.out/*.template.json
+
+  cnf:lint:
+    needs: [generate:cnf]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+        python-version: "3.10"
+      - run: pip install cfn-lint cfn-lint-serverless
+      - name: Download Cloudformation
+        uses: actions/download-artifact@v3
+        with:
+          name: cnf
+      - name: Lint Cloudformation
+        run: cfn-lint

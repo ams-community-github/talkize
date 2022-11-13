@@ -3,8 +3,6 @@ name: "Build & Quality & Security pipeline"
 on:
   workflow_call:
     secrets:
-      GITHUB_TOKEN:
-        required: true
       GITLEAKS_LICENSE:
         required: true
 

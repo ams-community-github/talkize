@@ -16,7 +16,6 @@ jobs:
   call-shared-workflow:
     uses: ams-community-github/talkize/.github/workflows/shared-workflow.yml@main
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   # deploy-rec:

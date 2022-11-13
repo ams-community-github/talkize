@@ -1,5 +1,5 @@
 templates:
-  - cnf/*.template.json
+  - cfn/*.template.json
 append_rules:
   - cfn_lint_serverless.rules
 ignore_checks:

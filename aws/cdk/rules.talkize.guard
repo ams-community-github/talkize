@@ -1,0 +1,25 @@
+let required_tag_types = [
+  /AWS::Lambda::Function/,
+  /AWS::DynamoDB::Table/
+]
+let required_tag_resources = Resources.*[
+  Type in %required_tag_types
+]
+
+let mandatory_tag_list = [{"Key":"deploy-mode","Value":"cloudformation"},{"Key":"project","Value":"talkize"}]
+rule required_tags when %required_tag_resources !empty {
+  %required_tag_resources { # for each resource
+    let all_tag_keys_for_resource = Properties.Tags[*]
+    %mandatory_tag_list IN %all_tag_keys_for_resource # ensure that all mandated keys are indeed present for the resource
+  } 
+}
+
+let aws_lambda_function_resources = Resources.*[ Type == 'AWS::Lambda::Function' ]
+rule aws_lambda_function_default when %aws_lambda_function_resources !empty {
+  %aws_lambda_function_resources.Properties.Runtime == "nodejs16.x"
+}
+
+let aws_dynamodb_table_resources = Resources.*[ Type == 'AWS::DynamoDB::Table' ]
+rule aws_dynamodb_table_default when %aws_dynamodb_table_resources !empty {
+  %aws_dynamodb_table_resources.Properties.BillingMode == "PAY_PER_REQUEST"
+}

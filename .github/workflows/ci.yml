@@ -114,13 +114,13 @@ jobs:
       - name: Scan with cnf nag
         uses: stelligent/cfn_nag@master
         with:
-        input_path: ..*\*template.json
-        extra_args: -o sarif
-        output_path: cfn_nag.sarif
+          input_path: ..*\*template.json
+          extra_args: -o sarif
+          output_path: cfn_nag.sarif
       - name: Upload to Github Code Scanning
         uses: github/codeql-action/upload-sarif@v1
         with:
-        sarif_file: cfn_nag.sarif
+          sarif_file: cfn_nag.sarif
 
   cnf-guard:
     needs: generate-cnf

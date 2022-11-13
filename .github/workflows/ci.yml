@@ -89,6 +89,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
       - name: Download Cloudformation
         uses: actions/download-artifact@v3
         with:
@@ -106,6 +107,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
       - name: Download Cloudformation
         uses: actions/download-artifact@v3
         with:
@@ -114,11 +116,11 @@ jobs:
       - name: Scan with cnf nag
         uses: stelligent/cfn_nag@master
         with:
-          input_path: ..*\*template.json
+          input_path: cnf\*template.json
           extra_args: -o sarif
           output_path: cfn_nag.sarif
       - name: Upload to Github Code Scanning
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: cfn_nag.sarif
 
@@ -140,4 +142,4 @@ jobs:
           apt update && apt upgrade -y && apt install software-properties-common apt-transport-https curl -y
           curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
           export PATH=${PATH}:~/.guard/bin
-          cfn-guard validate -r ./aws/cdk/rules.talkize.guard -d *template.json
+          cfn-guard validate -r ./aws/cdk/rules.talkize.guard -d ./cnf/*template.json

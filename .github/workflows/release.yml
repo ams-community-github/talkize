@@ -1,6 +1,8 @@
 name: "Continous Integration pipeline"
 
-concurrency: development
+concurrency:
+  group: release
+  cancel-in-progress: true
 
 env:
   AWS_REGION: "us-east-1"
@@ -8,7 +10,7 @@ env:
 on:
   push:
     branches:
-      - main
+      - release/*
 
 jobs:
   call-shared-workflow:
@@ -17,9 +19,23 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
-  # deploy-dev:
+  # deploy-rec:
   #   runs-on: ubuntu-latest
-  #   environment: development
+  #   environment: rec
+
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 16
+  #         cache: "npm"
+  #     - run: npm ci
+  #     - name: Generate Cloudformation
+  #       run: npm run deploy
+
+  # deploy-production:
+  #   runs-on: ubuntu-latest
+  #   environment: production
 
   #   steps:
   #     - uses: actions/checkout@v3

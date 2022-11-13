@@ -106,6 +106,7 @@ jobs:
           path: cnf
       - name: Lint Cloudformation
         run: cfn-lint
+        continue-on-error: true
 
   cnf-nag:
     needs: generate-cnf
@@ -121,7 +122,7 @@ jobs:
       - name: Scan with cnf nag
         uses: stelligent/cfn_nag@master
         with:
-          input_path: cnf\*template.json
+          input_path: cnf
           extra_args: -o sarif
           output_path: cfn_nag.sarif
       - name: Upload to Github Code Scanning
@@ -145,4 +146,4 @@ jobs:
           apt update && apt upgrade -y && apt install software-properties-common apt-transport-https curl -y
           curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
           export PATH=${PATH}:~/.guard/bin
-          cfn-guard validate -r ./aws/cdk/rules.talkize.guard -d ./cnf/*template.json
+          cfn-guard validate -r ./aws/cdk/rules.talkdize.guard -d ./cnf/*template.json

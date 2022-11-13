@@ -37,6 +37,11 @@ jobs:
 
       - name: Tests
         run: npm test
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "./**/junit.xml"
+        if: always()
 
   lint:
     runs-on: ubuntu-latest
@@ -90,17 +95,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - run: pip install cfn-lint cfn-lint-serverless
       - name: Download Cloudformation
         uses: actions/download-artifact@v3
         with:
           name: cnf
           path: cnf
-      - name: Setup Cloud Formation Linter with Latest Version
-        uses: scottbrenner/cfn-lint-action@v2
-      - name: Print the Cloud Formation Linter Version & run Linter
-        run: |
-          cfn-lint --version
-          cfn-lint
+      - name: Lint Cloudformation
+        run: cfn-lint
 
   cnf-nag:
     needs: generate-cnf
@@ -130,14 +135,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Download Cloudformation
+      - name: Download Cloudformation template
         uses: actions/download-artifact@v3
         with:
           name: cnf
           path: cnf
-      - name: Setup Cloud Formation Linter with Latest Version
-        uses: scottbrenner/cfn-lint-action@v2
-      - name: Print the Cloud Formation Linter Version & run Linter
+      - name: Install and scan using cloudformation guard
         run: |
           apt update && apt upgrade -y && apt install software-properties-common apt-transport-https curl -y
           curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh

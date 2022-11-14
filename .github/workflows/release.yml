@@ -18,30 +18,30 @@ jobs:
     secrets:
       GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
-  # deploy-rec:
-  #   runs-on: ubuntu-latest
-  #   environment: rec
+  deploy-rec:
+    runs-on: ubuntu-latest
+    environment: rec
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #         cache: "npm"
-  #     - run: npm ci
-  #     - name: Generate Cloudformation
-  #       run: npm run deploy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
+      - name: Deploy on staging environment
+        run: npm run deploy
 
-  # deploy-production:
-  #   runs-on: ubuntu-latest
-  #   environment: production
+  deploy-production:
+    runs-on: ubuntu-latest
+    environment: production
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #         cache: "npm"
-  #     - run: npm ci
-  #     - name: Generate Cloudformation
-  #       run: npm run deploy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
+      - name: Deploy on production environment
+        run: npm run deploy

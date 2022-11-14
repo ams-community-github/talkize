@@ -143,3 +143,13 @@ jobs:
           curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh
           export PATH=${PATH}:~/.guard/bin
           cfn-guard validate -r ./aws/cdk/rules.talkize.guard -d ./cfn/*template.json
+
+      - name: Set application version
+        run: |
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          BRANCH_VERSION=$(printf '%s\n' ${GIT_BRANCH//release\//})
+          TAG_VERSION=$(git tag --list | sort -V | tail -n1)
+          export BRANCH_VERSION="${branch_version}" && TAG_VERSION="${tag_version}" && npm run version
+          PATCH_VERSION="$(cat .patch-version)"
+          APPLICATION_VERSION=${branch_version}.${patch_version}
+          echo "APPLICATION_VERSION=$APPLICATION_VERSION" >> $GITHUB_ENV

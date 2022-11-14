@@ -28,5 +28,5 @@ jobs:
           node-version: 16
           cache: "npm"
       - run: npm ci
-      - name: Generate Cloudformation
+      - name: Deploy on development environment
         run: npm run deploy

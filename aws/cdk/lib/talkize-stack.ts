@@ -146,8 +146,7 @@ export class TalkizeStack extends Stack {
     Tags.of(resource).add('environment', this.#applicationEnv);
     Tags.of(resource).add('deploy-mode', 'cloudformation');
     Tags.of(resource).add('project', 'talkize');
-    //TODO: will be done with releaseflow
-    //Tags.of(resource).add('version', ?));
+    Tags.of(resource).add('version', process.env.APPLICATION_VERSION || 'none');
   }
 
   private setLogicalId(resource: Construct, logicalId: string) {

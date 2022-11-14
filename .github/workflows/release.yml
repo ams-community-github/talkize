@@ -18,30 +18,52 @@ jobs:
     secrets:
       GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
-  # deploy-rec:
-  #   runs-on: ubuntu-latest
-  #   environment: rec
+  application-version:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #         cache: "npm"
-  #     - run: npm ci
-  #     - name: Generate Cloudformation
-  #       run: npm run deploy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
+      - name: Set application version
+        run: |
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          BRANCH_VERSION=$(printf '%s\n' ${GIT_BRANCH//release\//})
+          TAG_VERSION=$(git tag --list | sort -V | tail -n1)
+          export BRANCH_VERSION="${branch_version}" && TAG_VERSION="${tag_version}" && npm run version
+          PATCH_VERSION="$(cat .patch-version)"
+          APPLICATION_VERSION=${branch_version}.${patch_version}
+          echo "APPLICATION_VERSION=$APPLICATION_VERSION" >> $GITHUB_ENV
 
-  # deploy-production:
-  #   runs-on: ubuntu-latest
-  #   environment: production
+  deploy-rec:
+    needs: application-version
+    runs-on: ubuntu-latest
+    environment: rec
 
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #         cache: "npm"
-  #     - run: npm ci
-  #     - name: Generate Cloudformation
-  #       run: npm run deploy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
+      - name: Deploy on staging environment
+        run: npm run deploy
+
+  deploy-production:
+    needs: application-version
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      - run: npm ci
+      - name: Deploy on production environment
+        run: npm run deploy

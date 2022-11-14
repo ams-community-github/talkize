@@ -42,8 +42,8 @@ jobs:
           echo "APPLICATION_VERSION=$APPLICATION_VERSION" >> $GITHUB_ENV
 
   get-version:
-    runs-on: application-version
-    needs: call-shared-workflow
+    runs-on: ubuntu-latest
+    needs: application-version
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

@@ -38,8 +38,7 @@ jobs:
           export BRANCH_VERSION="${BRANCH_VERSION}" && TAG_VERSION="${TAG_VERSION}" && npm run version
           export PATCH_VERSION="$(cat .patch-version)"
           export APPLICATION_VERSION=${BRANCH_VERSION}.${PATCH_VERSION}
-          echo "APPLICATION_VERSION : $APPLICATION_VERSION"
-          echo "APPLICATION_VERSION=$APPLICATION_VERSION" >> $GITHUB_ENV
+          echo "APPLICATION_VERSION=0.1.0" >> $GITHUB_ENV
 
   deploy-staging:
     needs: application-version

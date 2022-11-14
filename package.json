@@ -13,7 +13,8 @@
     "deploy": "turbo run deploy",
     "lint": "turbo run lint",
     "prepare": "husky install",
-    "test": "turbo run test --filter=!./aws/*"
+    "test": "turbo run test --filter=!./aws/*",
+    "version": "ts-node getPatchVersion.ts"
   },
   "repository": {
     "type": "git",

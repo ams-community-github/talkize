@@ -38,50 +38,64 @@ jobs:
           export BRANCH_VERSION="${BRANCH_VERSION}" && TAG_VERSION="${TAG_VERSION}" && npm run version
           export PATCH_VERSION="$(cat .patch-version)"
           export APPLICATION_VERSION=${BRANCH_VERSION}.${PATCH_VERSION}
-          echo "APPLICATION_VERSION=${APPLICATION_VERSION}" >> $GITHUB_ENV
+          echo "APPLICATION_VERSION : ${APPLICATION_VERSION}"
+          echo "APPLICATION_VERSION=$APPLICATION_VERSION" >> $GITHUB_ENV
 
-  deploy-staging:
-    needs: application-version
-    runs-on: ubuntu-latest
-    environment: staging
-    env:
-      APPLICATION_ENVIRONMENT: "staging"
+  get-version:
+    runs-on: application-version
+    needs: call-shared-workflow
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: "npm"
-      - run: npm ci
-      - name: Deploy on staging environment
-        run: npm run deploy
+      - name: Set application version
+        run: |
+          echo "APPLICATION_VERSION : ${{ env.APPLICATION_VERSION }}"
 
-  deploy-production:
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    environment: production
-    env:
-      APPLICATION_ENVIRONMENT: "production"
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: "npm"
-      - run: npm ci
-      - name: Push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          default_bump: false
-          default_prerelease_bump: false
-          custom_tag: ${{ env.APPLICATION_VERSION }}
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
-      - name: Deploy on production environment
-        run: npm run deploy
+  # deploy-staging:
+  #   needs: application-version
+  #   runs-on: ubuntu-latest
+  #   environment: staging
+  #   env:
+  #     APPLICATION_ENVIRONMENT: "staging"
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 16
+  #         cache: "npm"
+  #     - run: npm ci
+  #     - name: Deploy on staging environment
+  #       run: npm run deploy
+
+  # deploy-production:
+  #   needs: deploy-staging
+  #   runs-on: ubuntu-latest
+  #   environment: production
+  #   env:
+  #     APPLICATION_ENVIRONMENT: "production"
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 16
+  #         cache: "npm"
+  #     - run: npm ci
+  #     - name: Push tag
+  #       id: tag_version
+  #       uses: mathieudutour/github-tag-action@v6.1
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         default_bump: false
+  #         default_prerelease_bump: false
+  #         custom_tag: ${{ env.APPLICATION_VERSION }}
+  #     - name: Create a GitHub release
+  #       uses: ncipollo/release-action@v1
+  #       with:
+  #         tag: ${{ steps.tag_version.outputs.new_tag }}
+  #         name: Release ${{ steps.tag_version.outputs.new_tag }}
+  #         body: ${{ steps.tag_version.outputs.changelog }}
+  #     - name: Deploy on production environment
+  #       run: npm run deploy

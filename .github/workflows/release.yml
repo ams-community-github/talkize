@@ -1,4 +1,4 @@
-name: "Continous Integration pipeline"
+name: "Release pipeline"
 
 concurrency:
   group: release

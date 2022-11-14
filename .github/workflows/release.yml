@@ -60,8 +60,6 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     environment: production
-    outputs:
-      new_tag: ${{ steps.tag_version.outputs.tag }}
     env:
       APPLICATION_ENVIRONMENT: "production"
     steps:
@@ -72,15 +70,17 @@ jobs:
           cache: "npm"
       - run: npm ci
       - name: Push tag
-        id: tag_version
-        run: |
-          git tag -a "v${APPLICATION_VERSION}" -m "New version v${APPLICATION_VERSION} created by Github Workflow"
-          git push origin "v${APPLICATION_VERSION}"
-          echo "tag=v${APPLICATION_VERSION}" >> $GITHUB_OUTPUT
+        uses: pkgdeps/git-tag-action@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repo: ${{ github.repository }}
+          git_commit_sha: ${{ github.sha }}
+          version: ${{env.APPLICATION_VERSION}}
+          git_tag_prefix: "v"
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          tag: v${{env.APPLICATION_VERSION}}
+          name: Release ${{env.APPLICATION_VERSION}}
       - name: Deploy on production environment
         run: npm run deploy

@@ -15,14 +15,14 @@ on:
       - release/*
 
 jobs:
-  call-shared-workflow:
-    uses: ams-community-github/talkize/.github/workflows/shared-workflow.yml@main
-    secrets:
-      GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+  # call-shared-workflow:
+  #   uses: ams-community-github/talkize/.github/workflows/shared-workflow.yml@main
+  #   secrets:
+  #     GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   application-version:
     runs-on: ubuntu-latest
-    needs: call-shared-workflow
+    # needs: call-shared-workflow
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -39,7 +39,7 @@ jobs:
           export PATCH_VERSION="$(cat .patch-version)"
           export APPLICATION_VERSION=${BRANCH_VERSION}.${PATCH_VERSION}
           echo "APPLICATION_VERSION : ${APPLICATION_VERSION}"
-          echo "APPLICATION_VERSION=$APPLICATION_VERSION" >> $GITHUB_ENV
+          echo "APPLICATION_VERSION=0.1.0" >> $GITHUB_ENV
 
   get-version:
     runs-on: ubuntu-latest

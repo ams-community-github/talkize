@@ -76,7 +76,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: false
           default_prerelease_bump: false
-          custom_tag: ${{ env.APPLICATION_VERSION }}
+          custom_tag: "v0.1.0"
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:

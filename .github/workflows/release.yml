@@ -38,7 +38,7 @@ jobs:
           export BRANCH_VERSION="${BRANCH_VERSION}" && TAG_VERSION="${TAG_VERSION}" && npm run version
           export PATCH_VERSION="$(cat .patch-version)"
           export APPLICATION_VERSION=${BRANCH_VERSION}.${PATCH_VERSION}
-          echo "APPLICATION_VERSION=0.1.0" >> $GITHUB_ENV
+          echo "APPLICATION_VERSION=${APPLICATION_VERSION}" >> $GITHUB_ENV
 
   deploy-staging:
     needs: application-version
@@ -76,7 +76,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: false
           default_prerelease_bump: false
-          custom_tag: "v0.1.0"
+          custom_tag: ${{ env.APPLICATION_VERSION }}
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:

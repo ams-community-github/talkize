@@ -75,12 +75,12 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_repo: ${{ github.repository }}
           git_commit_sha: ${{ github.sha }}
-          version: ${{env.APPLICATION_VERSION}}
+          version: ${{ env.APPLICATION_VERSION }}
           git_tag_prefix: "v"
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: v${{env.APPLICATION_VERSION}}
-          name: Release ${{env.APPLICATION_VERSION}}
+          tag: v${{ env.APPLICATION_VERSION }}
+          name: Release ${{ env.APPLICATION_VERSION }}
       - name: Deploy on production environment
         run: npm run deploy

@@ -23,6 +23,8 @@ jobs:
   application-version:
     runs-on: ubuntu-latest
     # needs: call-shared-workflow
+    outputs:
+      applicationVersion: ${{ steps.app_version.outputs.version }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -31,19 +33,22 @@ jobs:
           cache: "npm"
       - run: npm ci
       - name: Set application version
+        id: app_version
         run: |
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
           BRANCH_VERSION=$(printf '%s\n' ${GIT_BRANCH//release\//})
           TAG_VERSION=$(git tag --list | sort -V | tail -n1)
-          export BRANCH_VERSION="${BRANCH_VERSION}" && TAG_VERSION="${TAG_VERSION}" && npm run version
-          export PATCH_VERSION="$(cat .patch-version)"
-          export APPLICATION_VERSION=${BRANCH_VERSION}.${PATCH_VERSION}
+          BRANCH_VERSION="${BRANCH_VERSION}" && TAG_VERSION="${TAG_VERSION}" && npm run version
+          PATCH_VERSION="$(cat .patch-version)"
+          APPLICATION_VERSION=${BRANCH_VERSION}.${PATCH_VERSION}
           echo "APPLICATION_VERSION : ${APPLICATION_VERSION}"
-          echo "APPLICATION_VERSION=0.1.0" >> $GITHUB_ENV
+          echo "version=${APPLICATION_VERSION}" >> $GITHUB_OUTPUT
 
   get-version:
     runs-on: ubuntu-latest
     needs: application-version
+    env:
+      APPLICATION_VERSION: ${{ needs.application-version.outputs.version }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

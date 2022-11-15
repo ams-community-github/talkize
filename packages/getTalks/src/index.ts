@@ -2,6 +2,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import { unflatten } from 'flat';
+import { Talk } from './types/talk';
 
 let client: DynamoDBDocumentClient;
 
@@ -28,7 +29,11 @@ export const handler: APIGatewayProxyHandler = async () => {
 
   const talks = Items?.map((i) => {
     const { partitionKey, sortKey, ...flattenData } = i;
-    return unflatten(flattenData);
+    const talkWithoutId = unflatten(flattenData) as Talk;
+    return {
+      ...talkWithoutId,
+      id: sortKey.split('|')[1],
+    };
   });
 
   return {

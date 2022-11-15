@@ -38,7 +38,7 @@ jobs:
           GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
           BRANCH_VERSION=$(printf '%s\n' ${GIT_BRANCH//release\//})
           TAG_VERSION=$(git tag --list | sort -V | tail -n1)
-          BRANCH_VERSION="${BRANCH_VERSION}" && TAG_VERSION="${TAG_VERSION}" && npm run version
+          export BRANCH_VERSION="${BRANCH_VERSION}" && TAG_VERSION="${TAG_VERSION}" && npm run version
           PATCH_VERSION="$(cat .patch-version)"
           APPLICATION_VERSION=${BRANCH_VERSION}.${PATCH_VERSION}
           echo "APPLICATION_VERSION : ${APPLICATION_VERSION}"

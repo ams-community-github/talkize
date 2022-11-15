@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: application-version
     env:
-      APPLICATION_VERSION: ${{ needs.application-version.outputs.version }}
+      APPLICATION_VERSION: ${{ needs.application-version.outputs.applicationVersion }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

@@ -104,6 +104,35 @@ jobs:
         run: cfn-lint
         continue-on-error: true
 
+  cfn-kics:
+    needs: generate-cfn
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cloudformation template
+        uses: actions/download-artifact@v3
+        with:
+          name: cfn
+          path: cfn
+      - name: Create result directory
+        run: mkdir -p results-dir
+      - name: KICS Github Action
+        uses: Checkmarx/kics-github-action@v1.6
+        with:
+          path: cfn
+          token: ${{ secrets.GITHUB_TOKEN }}
+          enable_comments: true
+          enable_jobs_summary: true
+          fail_on: high
+          type: CloudFormation
+          output_formats: "json,sarif"
+          output_path: results-dir
+      - name: Upload to Github Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+        sarif_file: results-dir/results.sarif
+
   cfn-nag:
     needs: generate-cfn
     runs-on: ubuntu-latest

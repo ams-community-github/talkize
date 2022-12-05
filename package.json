@@ -24,7 +24,7 @@
     "@types/aws-lambda": "^8.10.108",
     "@types/faker": "^5.5.9",
     "@types/flat": "^5.0.2",
-    "@types/jest": "^29.2.2",
+    "@types/jest": "^29.2.4",
     "@types/node": "^18.11.9",
     "@types/rosie": "^0.0.40",
     "@types/uuid": "^8.3.4",

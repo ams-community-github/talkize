@@ -121,7 +121,7 @@ jobs:
       - name: Create result directory
         run: mkdir -p results-dir
       - name: KICS Github Action
-        uses: Checkmarx/kics-github-action@v1.6.1
+        uses: Checkmarx/kics-github-action@v1.6.2
         with:
           path: cfn
           token: ${{ secrets.GITHUB_TOKEN }}

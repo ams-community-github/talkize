@@ -99,7 +99,7 @@ jobs:
           python-version: "3.10"
       - run: pip install cfn-lint cfn-lint-serverless
       - name: Download Cloudformation template
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cfn
           path: cfn
@@ -114,7 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Cloudformation template
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cfn
           path: cfn
@@ -143,7 +143,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Cloudformation template
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cfn
           path: cfn
@@ -165,7 +165,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download Cloudformation template
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cfn
           path: cfn

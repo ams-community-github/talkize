@@ -83,7 +83,7 @@ jobs:
       - name: Generate Cloudformation template
         run: npm run generate:cfn
       - name: Archive cloud formation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cfn
           path: aws/cdk/cdk.out/*.template.json

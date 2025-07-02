@@ -25,7 +25,7 @@ jobs:
     env:
       APPLICATION_ENVIRONMENT: "staging"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -40,7 +40,7 @@ jobs:
     outputs:
       applicationVersion: ${{ steps.app_version.outputs.version }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -65,7 +65,7 @@ jobs:
       APPLICATION_ENVIRONMENT: "production"
       APPLICATION_VERSION: ${{ needs.application-version.outputs.applicationVersion }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 16
